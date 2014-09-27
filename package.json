@@ -1,0 +1,6 @@
+{
+  "name": "easy-emitter",
+  "version": "0.0.1",
+  "description": "Easy event emitter implementation",
+  "repository": "git@github.com:fritx/easy-emitter.git"
+}
