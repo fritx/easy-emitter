@@ -112,4 +112,23 @@ describe('easy-emitter', function(){
 
   })
 
+  it('ons and ones', function(){
+
+    var obj = new Emitter()
+    obj.times = 0
+
+    function fn(){
+      obj.times++
+    }
+
+    obj.one('foo', fn)
+    obj.on('foo', fn)
+    obj.one('foo', fn)
+    
+
+    for (var i = 0; i < 5; i ++) { obj.emit('foo') }
+    assert.equal(obj.times, 7)
+
+  })
+
 })

@@ -21,8 +21,7 @@
     return this
   }
   Emitter.prototype.one = function(key, fn){
-    fn._one = true  // one flag
-    return this.on(key, fn)
+    return this.on(key, [fn]) // one flag
   }
   Emitter.prototype.off = function(key, fn){
     if (arguments.length === 1) {
@@ -30,7 +29,7 @@
     } else if (this._handlers[key]) {
       var arr = this._handlers[key]
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i] === fn) {
+        if (arr[i] === fn || arr[i][0] === fn) {
           arr.splice(i, 1)
           break
         }
@@ -45,9 +44,14 @@
       var args = _slice.call(arguments, 1)
       var arr = this._handlers[key]
       var _arr = arr.concat() // clone
-      for (var i = 0; i < _arr.length; i++) {
-        _arr[i].apply(this, args)
-        if (_arr[i]._one) arr.splice(i, 1)
+      for (var i = 0, fn; i < _arr.length; i++) {
+        fn = _arr[i]
+        if (fn[0]) {  // one flag
+          fn = fn[0]
+          if (arr) arr.splice(i, 1) // may been cleared
+          _arr.splice(i--, 1) // rollback i
+        }
+        fn.apply(this, args)
       }
     }
     return this
