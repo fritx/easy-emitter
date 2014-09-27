@@ -34,4 +34,31 @@ describe('easy-emitter', function(){
 
   })
 
+  it('ons', function(){
+
+    var obj = new Emitter()
+    obj.times = 0
+
+    obj.on('foo', function(){
+      obj.times++
+    })
+
+    for (var i = 0; i < 5; i ++) { obj.emit('foo') }
+    assert.equal(obj.times, 5)
+
+  })
+
+  it('ones', function(){
+
+    var obj = new Emitter()
+    obj.times = 0
+
+    obj.one('foo', function(){
+      obj.times++
+    })
+
+    for (var i = 0; i < 5; i ++) { obj.emit('foo') }
+    assert.equal(obj.times, 1)
+
+  })
 })
