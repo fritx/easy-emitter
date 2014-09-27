@@ -44,9 +44,10 @@
       var _slice = Array.prototype.slice
       var args = _slice.call(arguments, 1)
       var arr = this._handlers[key]
-      for (var i = 0; i < arr.length; i++) {
-        arr[i].apply(this, args)
-        if (arr[i]._one) arr.splice(i--, 1) // rollback i
+      var _arr = arr.concat() // clone
+      for (var i = 0; i < _arr.length; i++) {
+        _arr[i].apply(this, args)
+        if (_arr[i]._one) arr.splice(i, 1)
       }
     }
     return this

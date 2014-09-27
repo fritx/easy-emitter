@@ -61,4 +61,55 @@ describe('easy-emitter', function(){
     assert.equal(obj.times, 1)
 
   })
+
+  it('offs all', function(){
+
+    var obj = new Emitter()
+    obj.times1 = 0
+    obj.times2 = 0
+    obj.times3 = 0
+
+    obj.on('foo', function(){
+      obj.times1++
+    })
+    obj.on('foo', function(){
+      obj.times2++
+      if (obj.times2 >= 3) this.off('foo')
+    })
+    obj.on('foo', function(){
+      obj.times3++
+    })
+
+    for (var i = 0; i < 5; i ++) { obj.emit('foo') }
+    assert.equal(obj.times1, 3)
+    assert.equal(obj.times2, 3)
+    assert.equal(obj.times3, 3)
+
+  })
+
+  it('offs fn', function(){
+
+    var obj = new Emitter()
+    obj.times1 = 0
+    obj.times2 = 0
+    obj.times3 = 0
+
+    obj.on('foo', function(){
+      obj.times1++
+    })
+    obj.on('foo', function fn(){
+      obj.times2++
+      if (obj.times2 >= 3) this.off('foo', fn)
+    })
+    obj.on('foo', function(){
+      obj.times3++
+    })
+
+    for (var i = 0; i < 5; i ++) { obj.emit('foo') }
+    assert.equal(obj.times1, 5)
+    assert.equal(obj.times2, 3)
+    assert.equal(obj.times3, 5)
+
+  })
+
 })
