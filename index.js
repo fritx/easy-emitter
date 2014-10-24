@@ -6,7 +6,7 @@
     }
     this._handlers = {}
 
-    if (typeof this.emit !== 'function') { // auto apply prototype
+    if (!(this instanceof Emitter)) { // auto apply prototype
       for (var k in Emitter.prototype) {
         this[k] = Emitter.prototype[k]
       }

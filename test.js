@@ -131,4 +131,19 @@ describe('easy-emitter', function(){
 
   })
 
+  it('constructs well', function(){
+
+    var obj1 = new Emitter()
+    assert.equal(typeof obj1.emit, 'function')
+
+    var obj2 = {}
+    Emitter.call(obj2)
+    assert.equal(typeof obj1.emit, 'function')
+
+    assert.throws(function(){
+      Emitter.call(obj2)
+    }, /conflict/)
+
+  })
+
 })
